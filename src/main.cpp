@@ -32,6 +32,7 @@ const char *password = "asd123456";
 WiFiUDP Udp;
 unsigned int localUdpPort = 9527;                     // local port to listen on
 char incomingPacket[1024];                            // buffer for incoming packets
+char buffer[1024];                            // buffer for incoming packets
 
 Ticker ticker;
 
@@ -138,13 +139,19 @@ void loop()
     int len = Udp.read(incomingPacket, sizeof(incomingPacket));
     if (len > 0)
     {
-      display.clearDisplay();
+        unsigned long t = micros();
+        LZ4_decompress_safe((char *)incomingPacket, buffer, len, 1024);
+        Serial.print(micros()-t);
+        Serial.print("    decompress");
         Serial.print("\n");
-        Serial.print(micros());
-        Serial.print("\n");
+
+          display.clearDisplay();
+        t = micros();
         //这需要4毫秒，下一步改用copy看看能不能快点。
-        display.drawBitmap(0, 0, (unsigned char *)incomingPacket, 128, 64, SSD1306_WHITE);
-        Serial.print(micros());
+        display.drawBitmap(0, 0, (unsigned char *)buffer, 128, 64, SSD1306_WHITE);
+        Serial.print(micros()-t);
+        Serial.print("    drawBitmap");
+        Serial.print("\n");
 //        memcpy(display.getBuffer(),incomingPacket,1024);
       display.display();
     }
