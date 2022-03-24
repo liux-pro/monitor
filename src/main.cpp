@@ -23,6 +23,15 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "lz4.h"
+#include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
+
+const char *ssid = "River";
+const char *password = "asd123456";
+WiFiUDP Udp;
+unsigned int localUdpPort = 9527;                     // local port to listen on
+char incomingPacket[1024];                            // buffer for incoming packets
+char replyPacket[] = "Hi there! Got the message :-)"; // a reply string to send back
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -132,7 +141,7 @@ void setup()
   }
 
   // Invert and restore display, pausing in-between
-  display.invertDisplay(true);
+  display.invertDisplay(false);
   delay(1000);
   // display.invertDisplay(false);
   // delay(1000);
@@ -147,8 +156,33 @@ void setup()
   display.drawBitmap(0, 0, (unsigned char *)regen_buffer, 128, 64, SSD1306_WHITE);
 
   display.display();
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print('.');
+    delay(500);
+  }
+  Serial.print("Connected! IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.printf("UDP server on port %d\n", localUdpPort);
+  Udp.begin(localUdpPort);
 }
 
 void loop()
 {
+  int packetSize = Udp.parsePacket();
+  if (packetSize)
+  {
+    // receive incoming UDP packets
+    Serial.printf("Received %d bytes from %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+    int len = Udp.read(incomingPacket, sizeof(incomingPacket));
+    if (len > 0)
+    {
+      display.clearDisplay();
+      display.drawBitmap(0, 0, (unsigned char *)incomingPacket, 128, 64, SSD1306_WHITE);
+      display.display();
+    }
+  }
 }
