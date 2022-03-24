@@ -148,11 +148,12 @@ void loop()
           display.clearDisplay();
         t = micros();
         //这需要4毫秒，下一步改用copy看看能不能快点。
-        display.drawBitmap(0, 0, (unsigned char *)buffer, 128, 64, SSD1306_WHITE);
+//        display.drawBitmap(0, 0, (unsigned char *)buffer, 128, 64, SSD1306_WHITE);
+        memcpy(display.getBuffer(),buffer,1024);
+
         Serial.print(micros()-t);
         Serial.print("    drawBitmap");
         Serial.print("\n");
-//        memcpy(display.getBuffer(),incomingPacket,1024);
       display.display();
     }
   }
