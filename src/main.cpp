@@ -24,8 +24,6 @@
 #include <Adafruit_SSD1306.h>
 #include "lz4.h"
 
-
-
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
@@ -68,6 +66,7 @@ static const unsigned char PROGMEM logo_bmp[] =
      0b11111111, 0b00110000};
 
 static const unsigned char PROGMEM bmp[] = {255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 0, 0, 0, 3, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 0, 0, 0, 7, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 224, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 224, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 254, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 224, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 31, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 15, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 192, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 248, 0, 192, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 192, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 224, 0, 0, 0, 0, 63, 255, 255, 255, 255, 255, 255, 255, 255, 240, 0, 224, 0, 0, 0, 0, 31, 255, 255, 255, 255, 255, 255, 255, 255, 224, 0, 224, 0, 0, 0, 0, 31, 255, 255, 255, 255, 255, 255, 255, 255, 224, 0, 192, 0, 0, 0, 0, 31, 255, 255, 255, 255, 255, 255, 255, 255, 192, 0, 192, 0, 0, 0, 0, 15, 255, 255, 255, 255, 255, 255, 255, 255, 128, 0, 192, 0, 0, 0, 0, 15, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 192, 0, 0, 0, 0, 7, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 192, 0, 0, 0, 0, 3, 255, 255, 255, 255, 255, 255, 255, 254, 0, 1, 128, 0, 0, 0, 0, 3, 255, 255, 255, 255, 255, 255, 255, 252, 0, 1, 128, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 252, 0, 1, 128, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 248, 0, 1, 128, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 240, 0, 1, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 224, 0, 0, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 224, 0, 0, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 0, 0, 0, 1, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 128, 0, 0, 0, 0, 0, 0, 0, 0, 127, 255, 255, 255, 255, 255, 255, 192, 0, 0, 0, 0, 0, 0, 0, 0, 127, 255, 255, 255, 255};
+static const unsigned char bmp_c[] = {81, 255, 255, 255, 255, 0, 1, 0, 16, 63, 11, 0, 1, 2, 0, 1, 15, 0, 13, 16, 0, 17, 127, 28, 0, 0, 2, 0, 17, 128, 33, 0, 0, 10, 0, 2, 2, 0, 31, 252, 16, 0, 1, 18, 1, 28, 0, 0, 2, 0, 16, 248, 32, 0, 16, 3, 10, 0, 2, 2, 0, 16, 240, 16, 0, 18, 7, 12, 0, 0, 2, 0, 16, 224, 16, 0, 6, 111, 0, 43, 255, 192, 16, 0, 12, 32, 0, 1, 112, 0, 7, 48, 0, 16, 254, 48, 0, 6, 159, 0, 2, 16, 0, 0, 89, 0, 3, 2, 0, 0, 16, 0, 7, 143, 0, 1, 225, 0, 12, 16, 0, 16, 0, 24, 0, 4, 2, 0, 0, 80, 0, 4, 12, 0, 0, 2, 0, 15, 16, 0, 1, 7, 112, 0, 1, 17, 1, 15, 16, 0, 9, 0, 64, 0, 8, 32, 0, 12, 16, 0, 0, 64, 0, 0, 104, 0, 3, 2, 0, 0, 176, 0, 8, 144, 0, 1, 48, 1, 3, 28, 0, 0, 2, 0, 1, 16, 1, 7, 80, 0, 1, 48, 1, 12, 16, 0, 7, 32, 1, 1, 32, 0, 15, 16, 0, 8, 0, 127, 0, 32, 0, 31, 90, 0, 2, 2, 0, 1, 16, 0, 18, 15, 12, 0, 0, 2, 0, 1, 16, 0, 7, 49, 1, 1, 16, 0, 6, 161, 0, 1, 159, 0, 7, 161, 0, 2, 16, 0, 6, 48, 0, 1, 255, 1, 15, 16, 0, 8, 1, 207, 1, 7, 64, 0, 2, 48, 0, 6, 96, 0, 33, 248, 0, 193, 0, 5, 225, 0, 12, 16, 0, 18, 240, 32, 0, 5, 225, 0, 33, 240, 0, 33, 1, 12, 16, 0, 5, 225, 0, 18, 224, 32, 0, 7, 16, 0, 1, 96, 0, 5, 16, 0, 18, 192, 80, 0, 5, 1, 1, 27, 128, 16, 0, 18, 0, 16, 0, 5, 193, 2, 3, 16, 0, 4, 225, 2, 49, 254, 0, 1, 33, 1, 4, 16, 0, 19, 252, 16, 0, 4, 1, 1, 4, 16, 0, 4, 225, 0, 19, 248, 32, 0, 4, 16, 0, 48, 240, 0, 1, 15, 1, 5, 17, 1, 1, 205, 0, 7, 65, 1, 12, 16, 0, 1, 189, 0, 7, 32, 0, 1, 125, 0, 0, 2, 0, 0, 187, 1, 3, 157, 2, 1, 2, 0, 3, 65, 1, 4, 48, 0, 96, 0, 127, 255, 255, 255, 255};
 
 #define XPOS 0 // Indexes into the 'icons' array in function below
 #define YPOS 1
@@ -139,79 +138,17 @@ void setup()
   // delay(1000);
   display.clearDisplay();
   // testanimate(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT); // Animate bitmaps
-  display.drawBitmap(0, 0, bmp, 128, 64, SSD1306_WHITE);
+  // display.drawBitmap(0, 0, bmp, 128, 64, SSD1306_WHITE);
+
+  char *regen_buffer = (char *)malloc(1024);
+  Serial.print(micros());
+  const int decompressed_size = LZ4_decompress_safe((char *)bmp_c, regen_buffer, sizeof(bmp_c), 1024);
+  Serial.print(micros());
+  display.drawBitmap(0, 0, (unsigned char *)regen_buffer, 128, 64, SSD1306_WHITE);
+
   display.display();
 }
 
 void loop()
 {
-
-
-
-
-
-
-
-
-
-
-
-  /* Introduction */
-  // Below we will have a Compression and Decompression section to demonstrate.
-  // There are a few important notes before we start:
-  //   1) The return codes of LZ4_ functions are important.
-  //      Read lz4.h if you're unsure what a given code means.
-  //   2) LZ4 uses char* pointers in all LZ4_ functions.
-  //      This is baked into the API and not going to change, for consistency.
-  //      If your program uses different pointer types,
-  //      you may need to do some casting or set the right -Wno compiler flags to ignore those warnings (e.g.: -Wno-pointer-sign).
-
-  /* Compression */
-  // We'll store some text into a variable pointed to by *src to be compressed later.
-  const char *const src = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor site amat.";
-  // The compression function needs to know how many bytes exist.  Since we're using a string, we can use strlen() + 1 (for \0).
-  const int src_size = (int)(strlen(src) + 1);
-  // LZ4 provides a function that will tell you the maximum size of compressed output based on input data via LZ4_compressBound().
-  const int max_dst_size = LZ4_compressBound(src_size);
-
-  // We will use that size for our destination boundary when allocating space.
-  char *compressed_data = (char *)malloc((size_t)max_dst_size);
-  // That's all the information and preparation LZ4 needs to compress *src into *compressed_data.
-  // Invoke LZ4_compress_default now with our size values and pointers to our memory locations.
-  // Save the return value for error checking.
-  ESP.wdtDisable();
-  const int compressed_data_size = LZ4_compress_default(src, compressed_data, src_size, max_dst_size);
-  ESP.wdtEnable(2000);
-
-  // Not only does a positive return_value mean success, the value returned == the number of bytes required.
-  // You can use this to realloc() *compress_data to free up memory, if desired.  We'll do so just to demonstrate the concept.
-  compressed_data = (char *)realloc(compressed_data, (size_t)compressed_data_size);
-  Serial.println("reboot");
-
-  while (true)
-  {
-
-
-    Serial.println(0);
-
-
-    /* Decompression */
-    // Now that we've successfully compressed the information from *src to *compressed_data, let's do the opposite!
-    // The decompression will need to know the compressed size, and an upper bound of the decompressed size.
-    // In this example, we just re-use this information from previous section,
-    // but in a real-world scenario, metadata must be transmitted to the decompression side.
-    // Each implementation is in charge of this part. Oftentimes, it adds some header of its own.
-    // Sometimes, the metadata can be extracted from the local context.
-
-    // First, let's create a *new_src location of size src_size since we know that value.
-    char *const regen_buffer = (char *)malloc(src_size);
-    // The LZ4_decompress_safe function needs to know where the compressed data is, how many bytes long it is,
-    // where the regen_buffer memory location is, and how large regen_buffer (uncompressed) output will be.
-    // Again, save the return_value.
-    const int decompressed_size = LZ4_decompress_safe(compressed_data, regen_buffer, compressed_data_size, src_size);
-    // free(compressed_data);   /* no longer useful */
-    Serial.println(regen_buffer);
-
-    free(regen_buffer);
-  }
 }
